@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Account;
+import com.example.demo.model.AccountDTO;
 import com.example.demo.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,10 @@ import java.util.List;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+
+    private final ModelMapper modelMapper;
+
+
 
     public List<Account> getAccounts() {
         return accountRepository.findAll();
@@ -34,5 +40,14 @@ public class AccountService {
     }
 
     public boolean existsById(Long id) {return accountRepository.existsById(id);}
+
+    public AccountDTO mapEntityToDTO(Account entity) {
+        return modelMapper.map(entity, AccountDTO.class);
+    }
+
+    public Account mapDTOToEntity(AccountDTO dto) {
+        return modelMapper.map(dto, Account.class);
+    }
+
 
 }
