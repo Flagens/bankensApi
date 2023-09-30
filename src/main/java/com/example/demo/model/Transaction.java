@@ -8,12 +8,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction {
@@ -23,14 +25,16 @@ public class Transaction {
     public long transaction_id;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id")
-    @JsonBackReference
-    public Account sender_id;
-    @ManyToOne
-    @JoinColumn(name = "receiver_id")
-    @JsonBackReference
-    public Account receiver_id;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "sender_id")
+//    @JsonBackReference
+    public long sender_id;
+//    @ManyToOne
+//    @JoinColumn(name = "receiver_id")
+//    @JsonBackReference
+
+    public long receiver_id;
     public BigDecimal amount;
     public LocalDate timestamp;
     @Enumerated(EnumType.STRING)

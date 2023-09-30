@@ -36,8 +36,10 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-    @OneToMany(mappedBy = "sender_id")
-    @JsonManagedReference
+    //@OneToMany(mappedBy = "sender_id")
+    //@JsonManagedReference
+    @OneToMany
+    @JoinColumn(name = "sender_id")
     private List<Transaction> transactions;
 
 
