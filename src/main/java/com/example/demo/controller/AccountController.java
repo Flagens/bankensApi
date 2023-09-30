@@ -18,12 +18,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AccountController {
 
-    public static final Long EMPTY_ID = null;
-    public static final List<Transaction> EMPTY_TRANSACTION = null;
     private final AccountService accountService;
 
 
-    @GetMapping("/a")
+    @GetMapping("/getAccounts")
     public List<AccountDTO> getAccountDTOs() {
         List<Account> accounts = accountService.getAccounts();
         return accounts.stream()
@@ -31,7 +29,7 @@ public class AccountController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/aa/{id}")
+    @GetMapping("/getAccount/{id}")
     public ResponseEntity<AccountDTO> getAccount(@PathVariable Long id) {
         Account account = accountService.getAccount(id);
 
@@ -46,7 +44,7 @@ public class AccountController {
 
 
 
-    @PostMapping("/b/")
+    @PostMapping("/createAccount")
     public ResponseEntity<Account> createAccount(@RequestBody AccountDTO accountDTO) {
 //        if (accountDTO == null || accountDTO.getAccount_number() == null || accountDTO.getOwner_name() == null) {
 //            return ResponseEntity.badRequest().build();
@@ -59,40 +57,35 @@ public class AccountController {
                 .body(account);
     }
 
-//    @PutMapping("/bb/{id}")
-//    public ResponseEntity<Object> updateAccount(@PathVariable Long id, @RequestBody AccountDTO accountDTO) {
-//        if(accountService.existsById(id)) {
-//            Account account = accountService.updateAccount(new Account(
-//                    id,
-//                    accountDTO.getAccount_number(),
-//                    accountDTO.getBalance(),
-//                    accountDTO.getOwner_name(),
-//                    accountDTO.getAccount_type(),
-//                    accountDTO.getOpening_date(),
-//                    accountDTO.getCurrency(),
-//                    accountDTO.getTransactions()
-//            ));
-//            return ResponseEntity.status(HttpStatus.ACCEPTED)
-//                    .body(account);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//    }
+    @PutMapping("/updateAccount/{id}")
+    public ResponseEntity<Object> updateAccount(@PathVariable Long id, @RequestBody AccountDTO accountDTO) {
+        if (!accountService.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
 
-    @DeleteMapping("/c/{id}")
+        Account account = accountService.mapDTOToEntity(accountDTO);
+        account.setId(id);
+
+        Account updatedAccount = accountService.updateAccount(account);
+
+        AccountDTO updatedDTO = accountService.mapEntityToDTO(updatedAccount);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(updatedDTO);
+    }
+
+
+
+    @DeleteMapping("/deleteAccount/{id}")
     public ResponseEntity<Object> deleteAccount(@PathVariable Long id) {
-        try {
-            if (accountService.existsById(id)) {
-                accountService.deleteAccount(id);
-                return ResponseEntity.noContent().build();
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        if (accountService.existsById(id)) {
+            accountService.deleteAccount(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
+
 
 
 

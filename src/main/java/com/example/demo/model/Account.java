@@ -19,8 +19,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-//@AllArgsConstructor
-//@NoArgsConstructor
+
 @Component
 public class Account {
 
@@ -42,5 +41,7 @@ public class Account {
     @JoinColumn(name = "sender_id")
     private List<Transaction> transactions;
 
-
+    public void setId(Long account_id) {
+        this.account_id = account_id;
+    }
 }
