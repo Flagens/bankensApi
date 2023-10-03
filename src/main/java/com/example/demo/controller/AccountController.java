@@ -21,7 +21,7 @@ public class AccountController {
     private final AccountService accountService;
 
 
-    @GetMapping("/getAccounts")
+    @GetMapping("/accounts")
     public List<AccountDTO> getAccountDTOs() {
         List<Account> accounts = accountService.getAccounts();
         return accounts.stream()
@@ -29,7 +29,7 @@ public class AccountController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/getAccount/{id}")
+    @GetMapping("/accounts/{id}")
     public ResponseEntity<AccountDTO> getAccount(@PathVariable Long id) {
         Account account = accountService.getAccount(id);
 
@@ -44,7 +44,7 @@ public class AccountController {
 
 
 
-    @PostMapping("/createAccount")
+    @PostMapping("/createAccounts")
     public ResponseEntity<Account> createAccount(@RequestBody AccountDTO accountDTO) {
 //        if (accountDTO == null || accountDTO.getAccount_number() == null || accountDTO.getOwner_name() == null) {
 //            return ResponseEntity.badRequest().build();
@@ -57,14 +57,15 @@ public class AccountController {
                 .body(account);
     }
 
-    @PutMapping("/updateAccount/{id}")
+    @PutMapping("/updateAccounts/{id}")
     public ResponseEntity<Object> updateAccount(@PathVariable Long id, @RequestBody AccountDTO accountDTO) {
         if (!accountService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
 
         Account account = accountService.mapDTOToEntity(accountDTO);
-        account.setId(id);
+        //account.setId(id);
+        account.setAccount_id(id);
 
         Account updatedAccount = accountService.updateAccount(account);
 
@@ -76,7 +77,7 @@ public class AccountController {
 
 
 
-    @DeleteMapping("/deleteAccount/{id}")
+    @DeleteMapping("/deleteAccounts/{id}")
     public ResponseEntity<Object> deleteAccount(@PathVariable Long id) {
         if (accountService.existsById(id)) {
             accountService.deleteAccount(id);

@@ -19,8 +19,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-
 @Component
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 
     @Id
@@ -35,13 +36,13 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
+
     //@OneToMany(mappedBy = "sender_id")
     //@JsonManagedReference
+
     @OneToMany
     @JoinColumn(name = "sender_id")
     private List<Transaction> transactions;
 
-    public void setId(Long account_id) {
-        this.account_id = account_id;
-    }
+
 }

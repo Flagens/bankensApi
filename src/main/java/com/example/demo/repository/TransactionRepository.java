@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    @Query("SELECT t FROM Transaction t")
-    List<Transaction> findAllTransactionsWithSenderAccounts();
+    @Query("SELECT t FROM Transaction t WHERE t.sender_id = :accountId")
+    List<Transaction> findAllTransactionsForAccount(@Param("accountId") Long accountId);
 
 
 

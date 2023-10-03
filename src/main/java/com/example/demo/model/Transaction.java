@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
+@Component
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction {
@@ -23,17 +25,14 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long transaction_id;
-
-
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "sender_id")
-//    @JsonBackReference
+    //    @ManyToOne(fetch = FetchType.LAZY)
+    //    @JoinColumn(name = "sender_id")
+    //    @JsonBackReference
     public long sender_id;
-//    @ManyToOne
-//    @JoinColumn(name = "receiver_id")
-//    @JsonBackReference
 
+    //    @ManyToOne
+    //    @JoinColumn(name = "receiver_id")
+    //    @JsonBackReference
     public long receiver_id;
     public BigDecimal amount;
     public LocalDate timestamp;
@@ -41,6 +40,8 @@ public class Transaction {
     public transactionType transaction_type;
     @Enumerated(EnumType.STRING)
     public transactionStatus transaction_status;
+
+
 
 
 }

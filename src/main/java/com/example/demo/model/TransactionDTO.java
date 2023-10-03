@@ -14,8 +14,8 @@ import java.time.LocalDate;
 @Setter
 public class TransactionDTO {
 
-    private Account sender_id;
-    private Account receiver_id;
+    private long sender_id;
+    private long receiver_id;
     private BigDecimal amount;
     private LocalDate timestamp;
     private transactionType transaction_type;
