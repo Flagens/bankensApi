@@ -2,8 +2,6 @@ package com.example.demo.model;
 
 import com.example.demo.enums.transactionStatus;
 import com.example.demo.enums.transactionType;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
 

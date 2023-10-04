@@ -2,15 +2,11 @@ package com.example.demo.model;
 
 import com.example.demo.enums.AccountType;
 import com.example.demo.enums.Currency;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,7 +15,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Component
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {

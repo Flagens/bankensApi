@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.AuxilaryFunctions;
 import com.example.demo.model.Account;
 import com.example.demo.model.AccountDTO;
 import com.example.demo.model.Transaction;
 import com.example.demo.model.TransactionDTO;
+import com.example.demo.service.AccountService;
 import com.example.demo.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 public class TransactionController {
 
     private final TransactionService transactionService;
+
+    private final AuxilaryFunctions auxilaryFunctions;
 
 
     @GetMapping("/transactions/account/{accountId}")
@@ -40,7 +44,7 @@ public class TransactionController {
     public ResponseEntity<TransactionDTO> getAccount(@PathVariable Long id) {
         Transaction transaction = transactionService.getTransaction(id);
 
-        if (transaction == null) {
+        if (!(transactionService.existsById(id))) {
             return ResponseEntity.notFound().build();
         }
 
@@ -51,17 +55,24 @@ public class TransactionController {
 
     @PostMapping("/createTransactions")
     public ResponseEntity<Transaction> createTransaction(@RequestBody TransactionDTO transactionDTO) {
-        Transaction transaction = transactionService.mapDTOToEntity(transactionDTO);
-        transaction = transactionService.addTransaction(transaction);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(transaction);
+
+        if(!(auxilaryFunctions.accountExists(transactionDTO.getSender_id(), transactionDTO.getReceiver_id()))) {
+            return ResponseEntity.notFound().build();
+        }
+
+            Transaction transaction = transactionService.mapDTOToEntity(transactionDTO);
+            transaction = transactionService.addTransaction(transaction);
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(transaction);
+
     }
 
     @PutMapping("/updateTransactions/{id}")
     public ResponseEntity<Object> updateTransaction(@PathVariable long id, @RequestBody TransactionDTO transactionDTO) {
 
-        if(!transactionService.existsById(id)) {
+        if(!(auxilaryFunctions.accountExists(transactionDTO.getSender_id(), transactionDTO.getReceiver_id()))) {
             return ResponseEntity.notFound().build();
         }
 

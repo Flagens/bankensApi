@@ -20,7 +20,6 @@ public class AccountController {
 
     private final AccountService accountService;
 
-
     @GetMapping("/accounts")
     public List<AccountDTO> getAccountDTOs() {
         List<Account> accounts = accountService.getAccounts();
