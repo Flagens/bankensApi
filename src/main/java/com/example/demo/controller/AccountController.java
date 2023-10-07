@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Account;
-import com.example.demo.model.AccountDTO;
-import com.example.demo.model.Transaction;
+import com.example.demo.AuxilaryFunctions;
+import com.example.demo.model.*;
+import com.example.demo.repository.AddressRepository;
+import com.example.demo.repository.TransactionRepository;
 import com.example.demo.service.AccountService;
+import com.example.demo.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,10 @@ import java.util.stream.Collectors;
 public class AccountController {
 
     private final AccountService accountService;
+
+    private final AuxilaryFunctions auxilaryFunctions;
+
+
 
     @GetMapping("/accounts")
     public List<AccountDTO> getAccountDTOs() {
@@ -32,11 +39,13 @@ public class AccountController {
     public ResponseEntity<AccountDTO> getAccount(@PathVariable Long id) {
         Account account = accountService.getAccount(id);
 
+
         if (account == null) {
             return ResponseEntity.notFound().build();
         }
 
         AccountDTO accountDTO = accountService.mapEntityToDTO(account);
+
         return ResponseEntity.accepted().body(accountDTO);
         //return ResponseEntity.status(HttpStatus.ACCEPTED).body(accountDTO);
     }
@@ -50,6 +59,9 @@ public class AccountController {
 //        }
 
         Account account = accountService.mapDTOToEntity(accountDTO);
+        account.setAccount_number(auxilaryFunctions.ranomNumberAccount(10));
+        LocalDate date = LocalDate.now();
+        account.setOpening_date(date);
         account = accountService.createAccount(account);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -63,7 +75,6 @@ public class AccountController {
         }
 
         Account account = accountService.mapDTOToEntity(accountDTO);
-        //account.setId(id);
         account.setAccount_id(id);
 
         Account updatedAccount = accountService.updateAccount(account);

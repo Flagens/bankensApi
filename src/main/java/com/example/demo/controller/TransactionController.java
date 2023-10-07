@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     private final AuxilaryFunctions auxilaryFunctions;
+
 
 
     @GetMapping("/transactions/account/{accountId}")
@@ -62,6 +64,8 @@ public class TransactionController {
         }
 
             Transaction transaction = transactionService.mapDTOToEntity(transactionDTO);
+            LocalDate date = LocalDate.now();
+            transaction.setTimestamp(date);
             transaction = transactionService.addTransaction(transaction);
 
             return ResponseEntity.status(HttpStatus.CREATED)

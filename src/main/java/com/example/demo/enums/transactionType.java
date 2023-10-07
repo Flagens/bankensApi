@@ -1,7 +1,10 @@
 package com.example.demo.enums;
 
 public enum transactionType {
-    WPLATA,
+    DEPOSIT,
+    WITHDRAW,
+    TRANSFER,
     WYPLATA,
-    PRZELEW,
+    WPLATA,
+    PRZELEW
 }

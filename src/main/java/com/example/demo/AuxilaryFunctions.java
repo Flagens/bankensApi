@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Random;
+
 @Component
 public class AuxilaryFunctions {
 
@@ -21,6 +23,22 @@ public class AuxilaryFunctions {
 
     public boolean accountExists(long sender_id, long receiver_id) {
         return (accountService.existsById(sender_id)) && (accountService.existsById(receiver_id));
+
+    }
+
+    public String ranomNumberAccount(int length) {
+        String characters ="0123456789";
+
+        Random random = new Random();
+
+        StringBuilder randomString = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            randomString.append(characters.charAt(randomIndex));
+        }
+
+        return randomString.toString();
 
     }
 
