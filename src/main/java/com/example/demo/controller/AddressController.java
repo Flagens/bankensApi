@@ -17,20 +17,26 @@ public class AddressController {
     private final AddressService addressService;
 
     @GetMapping("/addresses")
-    public List<AddressDTO> getAllAddresses(){
+    public ResponseEntity<List<AddressDTO>> getAllAddresses(){
         List<Address> addresses = addressService.getAllAddresses();
-        return addresses.stream().map(addressService::mapEntityToDTO)
+
+        if(addresses.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<AddressDTO> addressDTOS = addresses.stream().map(addressService::mapEntityToDTO)
                 .collect(Collectors.toList());
+
+        return ResponseEntity.ok(addressDTOS);
     }
 
     @GetMapping("/addresses/{id}")
     public ResponseEntity<AddressDTO> getAddresses(@PathVariable Long id) {
-        Address address = addressService.getAddress(id);
 
-        if(address == null) {
+        if(!addressService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-
+        Address address = addressService.getAddress(id);
         AddressDTO addressDTO = addressService.mapEntityToDTO(address);
 
 
@@ -40,6 +46,8 @@ public class AddressController {
 
     @PostMapping("/createAddresses")
     public ResponseEntity<Address> createAddress(@RequestBody AddressDTO addressDTO) {
+
+
         Address address = addressService.mapDTOToEntity(addressDTO);
         address = addressService.addAddress(address);
 
@@ -66,11 +74,11 @@ public class AddressController {
 
     @DeleteMapping("/deleteAddresses/{id}")
     public ResponseEntity<Object> deleteAddresses(@PathVariable Long id) {
-        if (addressService.existsById(id)) {
+        if (!addressService.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        } else {
             addressService.deleteAddress(id);
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
         }
     }
 

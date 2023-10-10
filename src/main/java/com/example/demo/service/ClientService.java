@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Account;
-import com.example.demo.model.AccountDTO;
+
 import com.example.demo.model.Client;
 import com.example.demo.model.ClientDTO;
 import com.example.demo.repository.ClientRepository;
@@ -14,6 +13,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ClientService  {
+
+
 
     private final ClientRepository clientRepository;
 
@@ -48,6 +49,7 @@ public class ClientService  {
     public Client mapDTOToEntity(ClientDTO dto) {
         return modelMapper.map(dto, Client.class);
     }
+
 
 
 

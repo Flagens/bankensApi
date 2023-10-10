@@ -2,13 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.AuxilaryFunctions;
 import com.example.demo.model.*;
-import com.example.demo.repository.AddressRepository;
-import com.example.demo.repository.TransactionRepository;
+
 import com.example.demo.service.AccountService;
-import com.example.demo.service.AddressService;
+
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +61,7 @@ public class AccountController {
         LocalDate date = LocalDate.now();
         account.setOpening_date(date);
         account = accountService.createAccount(account);
+
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(account);

@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Account;
-import com.example.demo.model.AccountDTO;
+
 import com.example.demo.model.Transaction;
 import com.example.demo.model.TransactionDTO;
 import com.example.demo.repository.TransactionRepository;

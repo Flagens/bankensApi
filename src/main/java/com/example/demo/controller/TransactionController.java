@@ -1,11 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.AuxilaryFunctions;
-import com.example.demo.model.Account;
-import com.example.demo.model.AccountDTO;
+
 import com.example.demo.model.Transaction;
 import com.example.demo.model.TransactionDTO;
-import com.example.demo.service.AccountService;
+
 import com.example.demo.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
+
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,11 +43,12 @@ public class TransactionController {
 
     @GetMapping("/transactions/{id}")
     public ResponseEntity<TransactionDTO> getAccount(@PathVariable Long id) {
-        Transaction transaction = transactionService.getTransaction(id);
 
-        if (!(transactionService.existsById(id))) {
+
+        if (!transactionService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        Transaction transaction = transactionService.getTransaction(id);
 
         TransactionDTO transactionDTO = transactionService.mapEntityToDTO(transaction);
         return ResponseEntity.accepted().body(transactionDTO);
@@ -76,7 +76,8 @@ public class TransactionController {
     @PutMapping("/updateTransactions/{id}")
     public ResponseEntity<Object> updateTransaction(@PathVariable long id, @RequestBody TransactionDTO transactionDTO) {
 
-        if(!(auxilaryFunctions.accountExists(transactionDTO.getSender_id(), transactionDTO.getReceiver_id()))) {
+
+        if(!(auxilaryFunctions.accountExists(transactionDTO.getSender_id(), transactionDTO.getReceiver_id())) || !(transactionService.existsById(id))) {
             return ResponseEntity.notFound().build();
         }
 
