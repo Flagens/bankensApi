@@ -14,7 +14,7 @@ public class AuxilaryFunctions {
 
 
 
-     public AccountService accountService;
+     private final AccountService accountService;
 
     @Autowired
     public AuxilaryFunctions(AccountService accountService) {

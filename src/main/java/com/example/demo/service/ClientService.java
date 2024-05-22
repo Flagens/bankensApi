@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-
 import com.example.demo.model.Client;
 import com.example.demo.model.ClientDTO;
 import com.example.demo.repository.ClientRepository;
@@ -9,23 +8,35 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ClientService  {
-
-
+public class ClientService {
 
     private final ClientRepository clientRepository;
-
     private final ModelMapper modelMapper;
 
     public List<Client> findAllClients() {
         return clientRepository.findAll();
     }
 
-    public Client findClientsById(Long id) {
-        return clientRepository.findById(id).orElseThrow();
+    public Client findClientById(Long id) {
+        return clientRepository.findById(id).orElse(null);
+    }
+
+    public ClientDTO getClientDTO(Long id) {
+        Client client = findClientById(id);
+        if (client == null) {
+            return null;
+        }
+        return mapEntityToDTO(client);
+    }
+
+    public List<ClientDTO> getAllClientDTOs() {
+        return findAllClients().stream()
+                .map(this::mapEntityToDTO)
+                .collect(Collectors.toList());
     }
 
     public Client createClient(Client client) {
@@ -36,11 +47,25 @@ public class ClientService  {
         return clientRepository.save(client);
     }
 
+    public Client createClientFromDTO(ClientDTO clientDTO) {
+        Client client = mapDTOToEntity(clientDTO);
+        return createClient(client);
+    }
+
+    public ClientDTO updateClientFromDTO(Long id, ClientDTO clientDTO) {
+        Client client = mapDTOToEntity(clientDTO);
+        client.setClient_id(id);
+        Client updatedClient = updateClient(client);
+        return mapEntityToDTO(updatedClient);
+    }
+
     public void deleteClient(Long id) {
         clientRepository.deleteById(id);
     }
 
-    public boolean existsById(Long id) {return clientRepository.existsById(id);}
+    public boolean existsById(Long id) {
+        return clientRepository.existsById(id);
+    }
 
     public ClientDTO mapEntityToDTO(Client entity) {
         return modelMapper.map(entity, ClientDTO.class);
@@ -49,8 +74,4 @@ public class ClientService  {
     public Client mapDTOToEntity(ClientDTO dto) {
         return modelMapper.map(dto, Client.class);
     }
-
-
-
-
 }
