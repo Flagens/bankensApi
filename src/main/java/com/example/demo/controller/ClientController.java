@@ -37,6 +37,7 @@ public class ClientController {
     @PostMapping("/createClients")
     public ResponseEntity<Client> createClient(@RequestBody ClientDTO clientDTO) {
         Client client = clientService.createClientFromDTO(clientDTO);
+        clientService.process(client);
         return ResponseEntity.status(HttpStatus.CREATED).body(client);
     }
 
@@ -46,6 +47,8 @@ public class ClientController {
             return ResponseEntity.notFound().build();
         }
         ClientDTO updatedDTO = clientService.updateClientFromDTO(id, clientDTO);
+        Client updatedClient = clientService.findClientById(id);
+        clientService.process(updatedClient);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(updatedDTO);
     }
 

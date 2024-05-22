@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ClientService {
+public class ClientService extends BaseService<Client> {
 
     private final ClientRepository clientRepository;
     private final ModelMapper modelMapper;
@@ -73,5 +73,11 @@ public class ClientService {
 
     public Client mapDTOToEntity(ClientDTO dto) {
         return modelMapper.map(dto, Client.class);
+    }
+
+    @Override
+    public void process(Client client) {
+
+        System.out.println("elo1 " + client.getName());
     }
 }
