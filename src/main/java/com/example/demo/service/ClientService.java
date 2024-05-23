@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.model.Client;
 import com.example.demo.model.ClientDTO;
 import com.example.demo.repository.ClientRepository;
+import com.example.demo.utils.ConfigurableLogger;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,9 @@ public class ClientService extends BaseService<Client> {
     }
 
     public ClientDTO getClientDTO(Long id) {
+        ConfigurableLogger logger = new ConfigurableLogger();
         Client client = findClientById(id);
+        logger.log("Client found: " + client);
         if (client == null) {
             return null;
         }

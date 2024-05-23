@@ -4,6 +4,7 @@ import com.example.demo.AuxilaryFunctions;
 import com.example.demo.model.Account;
 import com.example.demo.model.AccountDTO;
 import com.example.demo.repository.AccountRepository;
+import com.example.demo.utils.ConfigurableLogger;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,11 @@ public class AccountService {
     }
 
     public AccountDTO getAccountDTO(Long id) {
+        ConfigurableLogger logger = new ConfigurableLogger();
+        logger.configure("dummy_file.log");
+
         Account account = getAccount(id);
+        logger.logToFile("Account found: " + account);
         if (account == null) {
             return null;
         }
